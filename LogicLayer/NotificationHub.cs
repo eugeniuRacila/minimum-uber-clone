@@ -31,6 +31,17 @@ namespace LogicLayer
             var response = client.Get(request);
             await Clients.All.SendAsync("notification", response.Content);
         }
+
+        public void CreateOrder(string jsonOrder)
+        {
+            var client = new RestClient(baseUrl);
+            
+            var request = new RestRequest("orders", Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddJsonBody(jsonOrder);
+            
+            var response = client.Execute(request);
+        }
         
         // public async void SendNotification(string message)
         // {

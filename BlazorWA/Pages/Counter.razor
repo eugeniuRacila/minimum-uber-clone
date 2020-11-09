@@ -1,7 +1,10 @@
 ﻿@page "/counter"
+
+@inject IJSRuntime JS
+@using Microsoft.AspNetCore.SignalR.Client
 @using BlazorWA.Models
-@using Newtonsoft.Json
 @using System.Text
+@using System.Text.Json
 
 <h1>Create order</h1>
 
@@ -39,6 +42,8 @@
 </EditForm>
 
 @code {
+    string url = "https://localhost:5001/notification";
+    HubConnection _connection;
     private readonly HttpClient _httpClient = new HttpClient();
     private Order _order = new Order {CustomerId = 1};
 
@@ -46,9 +51,29 @@
     {
         // serializez with first capital hour
         string serializedOrder = System.Text.Json.JsonSerializer.Serialize(_order);
-        StringContent content = new StringContent(
-            serializedOrder, Encoding.UTF8, "application/json");
         Console.WriteLine(serializedOrder);
-        HttpResponseMessage responseMessage = await _httpClient.PostAsync("http://localhost:8080/orders", content);
+        await _connection.SendAsync("CreateOrder", serializedOrder);
+    }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await JS.InvokeVoidAsync("console.log", "Initialized");
+        await ConnectToServer();
+        await _connection.SendAsync("SendNotification");
+    }
+
+    private async Task ConnectToServer()
+    {
+        await JS.InvokeVoidAsync("console.log", "Connected to SignalR");
+        _connection = new HubConnectionBuilder()
+            .WithUrl(url)
+            .Build();
+
+        await _connection.StartAsync();
+
+        _connection.Closed += async (s) =>
+        {
+            await _connection.StartAsync();
+        };
     }
 }
