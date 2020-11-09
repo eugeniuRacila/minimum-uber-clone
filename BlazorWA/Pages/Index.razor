@@ -73,10 +73,9 @@
             StateHasChanged();
         });
 
-        _connection.On<string>("getOrders", async receivedPosts =>
+        _connection.On<string>("receiveOrders",  receivedPosts =>
         {
             jsonPosts = receivedPosts;
-            await JS.InvokeVoidAsync("console.log", "getOrders event triggered");
             StateHasChanged();
         });
     }
