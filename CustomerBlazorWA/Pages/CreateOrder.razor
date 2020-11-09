@@ -3,7 +3,6 @@
 @inject IJSRuntime JS
 @using Microsoft.AspNetCore.SignalR.Client
 @using BlazorWA.Models
-@using System.Text
 @using System.Text.Json
 
 <h1>Create order</h1>
@@ -28,29 +27,18 @@
         Amount of seats:
         <InputNumber id="amountOfSeats" @bind-Value="_order.AmountOfSeats" />
     </label>
-    @* <label> *@
-    @*     Amount of seats: *@
-    @*     <InputSelect @bind-Value="_order.AmountOfSeats"> *@
-    @*         <option default value="1">1</option> *@
-    @*         <option value="2">2</option> *@
-    @*         <option value="3">3</option> *@
-    @*         <option value="4">4</option> *@
-    @*     </InputSelect> *@
-    @* </label> *@
 
     <button type="submit">Submit</button>
 </EditForm>
 
 @code {
-    string url = "https://localhost:5001/notification";
+    string url = "https://localhost:5001/orders";
     HubConnection _connection;
-    private readonly HttpClient _httpClient = new HttpClient();
     private Order _order = new Order {CustomerId = 1};
 
     private async void HandleValidSubmit()
     {
-        // serializez with first capital hour
-        string serializedOrder = System.Text.Json.JsonSerializer.Serialize(_order);
+        string serializedOrder = JsonSerializer.Serialize(_order);
         Console.WriteLine(serializedOrder);
         await _connection.SendAsync("CreateOrder", serializedOrder);
     }

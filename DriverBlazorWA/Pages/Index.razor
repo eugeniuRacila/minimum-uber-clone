@@ -2,25 +2,11 @@
 
 @inject IJSRuntime JS
 @using Microsoft.AspNetCore.SignalR.Client
-@using BlazorWA.Models
+@using DriverBlazorWA.Models
 
-<h1>Welcome to SignalR with Blazor</h1>
-@* <button class="btn btn-success" @onclick="async () => await ConnectToServer()">Connect</button> *@
+<h1>Driver BlazorWA</h1>
+
 <h3>Connected to SignalR? @connectionStatus</h3>
-<div class="row">
-    <div class="col-4">
-        @foreach (var item in notifications)
-        {
-            <div class="row">
-                <h4>@item</h4>
-            </div>
-        }
-    </div>
-</div>
-
-@* <button @onclick="Send" disabled="@(!isConnected)">Test SignalR</button> *@
-@* <br> *@
-@* <button @onclick="GetOrders" disabled="@(!isConnected)">GetOrders</button> *@
 
 <hr>
 
@@ -52,13 +38,11 @@
 </table>
 
 @code {
-    string url = "https://localhost:5001/notification";
+    string url = "https://localhost:5002/orders";
 
-    HubConnection _connection = null;
-    bool isConnected = false;
+    HubConnection _connection;
     string connectionStatus = "Disconnected";
-
-    List<string> notifications = new List<string>();
+    
     private IList<Order> _orders = new List<Order>();
     
     Task Send() =>
@@ -71,7 +55,7 @@
     {
         await JS.InvokeVoidAsync("console.log", "Initialized");
         await ConnectToServer();
-        await _connection.SendAsync("SendNotification");
+        await _connection.SendAsync("GetOrders");
     }
 
     private async Task ConnectToServer()
@@ -82,24 +66,15 @@
             .Build();
 
         await _connection.StartAsync();
-        isConnected = true;
         connectionStatus = "Connected";
 
         _connection.Closed += async (s) =>
         {
-            isConnected = false;
             connectionStatus = "Disconnected";
             await _connection.StartAsync();
-            isConnected = true;
         };
 
-        _connection.On<string>("notify", m =>
-        {
-            notifications.Add(m);
-            StateHasChanged();
-        });
-
-        _connection.On<string>("notification",  receivedOrders =>
+        _connection.On<string>("receiveOrders",  receivedOrders =>
         {
             _orders = Newtonsoft.Json.JsonConvert.DeserializeObject<IList<Order>>(receivedOrders);
             StateHasChanged();
