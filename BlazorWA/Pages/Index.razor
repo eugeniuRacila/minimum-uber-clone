@@ -1,0 +1,83 @@
+﻿@page "/"
+
+@inject IJSRuntime JS
+@using Microsoft.AspNetCore.SignalR.Client
+@using BlazorWA.Models
+
+<h1>Welcome to SignalR with Blazor</h1>
+@* <button class="btn btn-success" @onclick="async () => await ConnectToServer()">Connect</button> *@
+<h3>Connected to SignalR? @connectionStatus</h3>
+<div class="row">
+    <div class="col-4">
+        @foreach (var item in notifications)
+        {
+            <div class="row">
+                <h4>@item</h4>
+            </div>
+        }
+    </div>
+</div>
+
+<button @onclick="Send" disabled="@(!isConnected)">Test SignalR</button>
+<br>
+<button @onclick="GetOrders" disabled="@(!isConnected)">GetOrders</button>
+
+<hr>
+<h3>Posts</h3>
+<code>@jsonPosts</code>
+
+@code {
+    string url = "https://localhost:5001/notification";
+
+    HubConnection _connection = null;
+    bool isConnected = false;
+    string connectionStatus = "Disconnected";
+
+    List<string> notifications = new List<string>();
+    string jsonPosts;
+    
+    Task Send() =>
+        _connection.SendAsync("SendNotification", "test");
+    
+    Task GetOrders() =>
+        _connection.SendAsync("GetOrders");
+
+    protected override async Task OnInitializedAsync()
+    {
+        await JS.InvokeVoidAsync("console.log", "Initialized");
+        await ConnectToServer();
+    }
+
+    private async Task ConnectToServer()
+    {
+        await JS.InvokeVoidAsync("console.log", "Connected to SignalR");
+        _connection = new HubConnectionBuilder()
+            .WithUrl(url)
+            .Build();
+
+        await _connection.StartAsync();
+        isConnected = true;
+        connectionStatus = "Connected";
+
+        _connection.Closed += async (s) =>
+        {
+            isConnected = false;
+            connectionStatus = "Disconnected";
+            await _connection.StartAsync();
+            isConnected = true;
+        };
+
+        _connection.On<string>("notification", m =>
+        {
+            notifications.Add(m);
+            StateHasChanged();
+        });
+
+        _connection.On<string>("getOrders", async receivedPosts =>
+        {
+            jsonPosts = receivedPosts;
+            await JS.InvokeVoidAsync("console.log", "getOrders event triggered");
+            StateHasChanged();
+        });
+    }
+}

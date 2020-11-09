@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicLayer", "LogicLayer\LogicLayer.csproj", "{F09AD11C-122C-4627-91A5-12F43180D9CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorWA", "BlazorWA\BlazorWA.csproj", "{8F9D5516-7D31-43A6-B9DF-747B26B6A73B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F09AD11C-122C-4627-91A5-12F43180D9CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F09AD11C-122C-4627-91A5-12F43180D9CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F09AD11C-122C-4627-91A5-12F43180D9CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F09AD11C-122C-4627-91A5-12F43180D9CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F9D5516-7D31-43A6-B9DF-747B26B6A73B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F9D5516-7D31-43A6-B9DF-747B26B6A73B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F9D5516-7D31-43A6-B9DF-747B26B6A73B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F9D5516-7D31-43A6-B9DF-747B26B6A73B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
