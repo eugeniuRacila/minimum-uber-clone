@@ -19,8 +19,7 @@ namespace LogicLayer
                     policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
                 });
             });
-
-            services.AddSingleton<Server>();
+            
             services.AddSignalR();
         }
 
@@ -38,7 +37,7 @@ namespace LogicLayer
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHub<NotificationHub>("/notification");
+                endpoints.MapHub<NotificationHub>("/orders");
                 endpoints.MapGet("/", async context => { await context.Response.WriteAsync("Hello World!"); });
             });
         }

@@ -1,8 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicLayer", "LogicLayer\LogicLayer.csproj", "{F09AD11C-122C-4627-91A5-12F43180D9CA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerServer", "CustomerServer\CustomerServer.csproj", "{F09AD11C-122C-4627-91A5-12F43180D9CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorWA", "BlazorWA\BlazorWA.csproj", "{8F9D5516-7D31-43A6-B9DF-747B26B6A73B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerBlazorWA", "CustomerBlazorWA\CustomerBlazorWA.csproj", "{8F9D5516-7D31-43A6-B9DF-747B26B6A73B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriverServer", "DriverServer\DriverServer.csproj", "{EF3D5C2F-EFF1-4412-9750-693FD653F5B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriverBlazorWA", "DriverBlazorWA\DriverBlazorWA.csproj", "{C3B6E35C-2325-4220-AE42-5FAC67C37269}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +22,13 @@ Global
 		{8F9D5516-7D31-43A6-B9DF-747B26B6A73B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F9D5516-7D31-43A6-B9DF-747B26B6A73B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F9D5516-7D31-43A6-B9DF-747B26B6A73B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF3D5C2F-EFF1-4412-9750-693FD653F5B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF3D5C2F-EFF1-4412-9750-693FD653F5B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF3D5C2F-EFF1-4412-9750-693FD653F5B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF3D5C2F-EFF1-4412-9750-693FD653F5B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3B6E35C-2325-4220-AE42-5FAC67C37269}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3B6E35C-2325-4220-AE42-5FAC67C37269}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3B6E35C-2325-4220-AE42-5FAC67C37269}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3B6E35C-2325-4220-AE42-5FAC67C37269}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
