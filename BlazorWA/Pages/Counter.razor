@@ -1,17 +1,54 @@
 ﻿@page "/counter"
+@using BlazorWA.Models
+@using Newtonsoft.Json
+@using System.Text
 
-<h1>Counter</h1>
+<h1>Create order</h1>
 
-<p>Current count: @currentCount</p>
+<EditForm Model="@_order" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+    <label>
+        Starting point:
+        <InputText id="startingPoint" @bind-Value="_order.StartingPoint" />
+    </label>
+    <label>
+        Destination point:
+        <InputText id="destinationPoint" @bind-Value="_order.DestinationPoint" />
+    </label>
+    <label>
+        Type of car:
+        <InputText id="typeOfCar" @bind-Value="_order.TypeOfCar" />
+    </label>
+    <label>
+        Amount of seats:
+        <InputNumber id="amountOfSeats" @bind-Value="_order.AmountOfSeats" />
+    </label>
+    @* <label> *@
+    @*     Amount of seats: *@
+    @*     <InputSelect @bind-Value="_order.AmountOfSeats"> *@
+    @*         <option default value="1">1</option> *@
+    @*         <option value="2">2</option> *@
+    @*         <option value="3">3</option> *@
+    @*         <option value="4">4</option> *@
+    @*     </InputSelect> *@
+    @* </label> *@
+
+    <button type="submit">Submit</button>
+</EditForm>
 
 @code {
-    private int currentCount = 0;
+    private readonly HttpClient _httpClient = new HttpClient();
+    private Order _order = new Order {CustomerId = 1};
 
-    private void IncrementCount()
+    private async void HandleValidSubmit()
     {
-        currentCount++;
+        // serializez with first capital hour
+        string serializedOrder = System.Text.Json.JsonSerializer.Serialize(_order);
+        StringContent content = new StringContent(
+            serializedOrder, Encoding.UTF8, "application/json");
+        Console.WriteLine(serializedOrder);
+        HttpResponseMessage responseMessage = await _httpClient.PostAsync("http://localhost:8080/orders", content);
     }
-
 }
