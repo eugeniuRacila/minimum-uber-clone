@@ -30,7 +30,7 @@ namespace DriverServer
             Task.Run(Start);
         }
 
-        public void Start()
+        private void Start()
         {
             Console.WriteLine($"Server sockets (PORT :: {PORT_NO} listening..");
             listener.Start();
