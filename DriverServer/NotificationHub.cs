@@ -25,5 +25,10 @@ namespace DriverServer
             
             await Clients.All.SendAsync("receiveOrders", response.Content);
         }
+
+        public async void TakeOrder(int orderId)
+        {
+            Console.WriteLine("Attempt to take an order");
+        }
     }
 }

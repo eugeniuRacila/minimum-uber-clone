@@ -32,6 +32,7 @@
               <td>@order.DestinationPoint</td>
               <td>@order.TypeOfCar</td>
               <td>@order.AmountOfSeats</td>
+              <td><button @onclick="TakeOrder">Take order</button></td>
           </tr>
       }
   </tbody>
@@ -56,6 +57,11 @@
         await JS.InvokeVoidAsync("console.log", "Initialized");
         await ConnectToServer();
         await _connection.SendAsync("GetOrders");
+    }
+
+    private async Task TakeOrder()
+    {
+        await _connection.SendAsync("TakeOrder", 1);
     }
 
     private async Task ConnectToServer()
