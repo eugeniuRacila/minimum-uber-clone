@@ -32,6 +32,7 @@
               <td>@order.DestinationPoint</td>
               <td>@order.TypeOfCar</td>
               <td>@order.AmountOfSeats</td>
+              <td><button @onclick="TakeOrder">Take order</button></td>
           </tr>
       }
   </tbody>
@@ -58,6 +59,11 @@
         await _connection.SendAsync("GetOrders");
     }
 
+    private async Task TakeOrder()
+    {
+        await _connection.SendAsync("TakeOrder", 1);
+    }
+
     private async Task ConnectToServer()
     {
         await JS.InvokeVoidAsync("console.log", "Connected to SignalR");
@@ -77,6 +83,12 @@
         _connection.On<string>("receiveOrders",  receivedOrders =>
         {
             _orders = Newtonsoft.Json.JsonConvert.DeserializeObject<IList<Order>>(receivedOrders);
+            StateHasChanged();
+        });
+        
+        _connection.On<string>("pushOrder",  jsonOrder =>
+        {
+            _orders.Add(Newtonsoft.Json.JsonConvert.DeserializeObject<Order>(jsonOrder));
             StateHasChanged();
         });
     }

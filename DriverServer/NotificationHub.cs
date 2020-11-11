@@ -25,5 +25,22 @@ namespace DriverServer
             
             await Clients.All.SendAsync("receiveOrders", response.Content);
         }
+        
+        public async void PushOrder(string jsonOrder)
+        {
+            try
+            {
+                await Clients.All.SendAsync("pushOrder", jsonOrder);
+            }
+            catch (NullReferenceException e)
+            {
+                Console.WriteLine("DriverServer\\NotificationHub looks like there are no connected clients.");
+            }
+        }
+
+        public async void TakeOrder(int orderId)
+        {
+            Console.WriteLine("Attempt to take an order");
+        }
     }
 }

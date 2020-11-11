@@ -47,7 +47,6 @@
     {
         await JS.InvokeVoidAsync("console.log", "Initialized");
         await ConnectToServer();
-        await _connection.SendAsync("SendNotification");
     }
 
     private async Task ConnectToServer()
