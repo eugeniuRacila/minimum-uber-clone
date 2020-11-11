@@ -13,10 +13,23 @@ namespace LogicLayer
         
         private Thread socketThread;
         private TcpClient client;
+        private NetworkStream nwStream;
 
         public Rozetka()
         {
-            client = new TcpClient(SERVER_IP, PORT_NO);
+            try
+            {
+                client = new TcpClient(SERVER_IP, PORT_NO);
+                NetworkStream nwStream = client.GetStream();
+            }
+            catch (SystemException e)
+            {
+                Console.WriteLine("Server socket is closed");
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine($"Rozetka error :: {exception}");
+            }
         }
 
         public void Run()
@@ -26,23 +39,32 @@ namespace LogicLayer
 
         public void Start()
         {
-            Console.WriteLine($"Client sockets (PORT :: {PORT_NO} listening..");
+            Console.WriteLine($"Client sockets (PORT :: {PORT_NO}) listening..");
             //---data to send to the server---
-            string textToSend = "Testing data";
+            // string textToSend = "Testing data";
+            //
+            //
+            // byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes(textToSend);
+            //
+            // //---send the text---
+            // Console.WriteLine("Sending : " + textToSend);
+            // nwStream.Write(bytesToSend, 0, bytesToSend.Length);
+            //
+            // //---read back the text---
+            // byte[] bytesToRead = new byte[client.ReceiveBufferSize];
+            // int bytesRead = nwStream.Read(bytesToRead, 0, client.ReceiveBufferSize);
+            // Console.WriteLine("Received : " + Encoding.ASCII.GetString(bytesToRead, 0, bytesRead));
+            // Console.ReadLine();
+            // client.Close();
+        }
+
+        public void SendOrder()
+        {
+            string textToSend = "order";
             
-            NetworkStream nwStream = client.GetStream();
             byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes(textToSend);
-
-            //---send the text---
-            Console.WriteLine("Sending : " + textToSend);
+            Console.WriteLine("Sending a new order to Driver Socket Server :: " + textToSend);
             nwStream.Write(bytesToSend, 0, bytesToSend.Length);
-
-            //---read back the text---
-            byte[] bytesToRead = new byte[client.ReceiveBufferSize];
-            int bytesRead = nwStream.Read(bytesToRead, 0, client.ReceiveBufferSize);
-            Console.WriteLine("Received : " + Encoding.ASCII.GetString(bytesToRead, 0, bytesRead));
-            Console.ReadLine();
-            client.Close();
         }
     }
 }

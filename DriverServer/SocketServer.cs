@@ -32,7 +32,7 @@ namespace DriverServer
 
         private void Start()
         {
-            Console.WriteLine($"Server sockets (PORT :: {PORT_NO} listening..");
+            Console.WriteLine($"Server sockets (PORT :: {PORT_NO}) listening..");
             listener.Start();
 
             //---incoming client connected---
@@ -52,9 +52,11 @@ namespace DriverServer
             //---write back the text to the client---
             Console.WriteLine("Sending back : " + dataReceived);
             nwStream.Write(buffer, 0, bytesRead);
-            client.Close();
-            listener.Stop();
-            Console.ReadLine();
+            
+            
+            // client.Close();
+            // listener.Stop();
+            // Console.ReadLine();
         }
 
         // public async Task DisplayAllOrders()
