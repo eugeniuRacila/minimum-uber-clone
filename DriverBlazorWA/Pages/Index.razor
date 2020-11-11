@@ -85,5 +85,11 @@
             _orders = Newtonsoft.Json.JsonConvert.DeserializeObject<IList<Order>>(receivedOrders);
             StateHasChanged();
         });
+        
+        _connection.On<string>("pushOrder",  jsonOrder =>
+        {
+            _orders.Add(Newtonsoft.Json.JsonConvert.DeserializeObject<Order>(jsonOrder));
+            StateHasChanged();
+        });
     }
 }

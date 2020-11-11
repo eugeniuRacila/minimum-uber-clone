@@ -20,6 +20,7 @@ namespace DriverServer
                 });
             });
 
+            services.AddSingleton<NotificationHub>();
             services.AddSingleton<SocketServer>();
             services.AddSignalR();
         }

@@ -20,7 +20,7 @@ namespace LogicLayer
             try
             {
                 client = new TcpClient(SERVER_IP, PORT_NO);
-                NetworkStream nwStream = client.GetStream();
+                nwStream = client.GetStream();
             }
             catch (SystemException e)
             {
@@ -58,12 +58,10 @@ namespace LogicLayer
             // client.Close();
         }
 
-        public void SendOrder()
+        public void SendOrder(string jsonOrder)
         {
-            string textToSend = "order";
-            
-            byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes(textToSend);
-            Console.WriteLine("Sending a new order to Driver Socket Server :: " + textToSend);
+            byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes(jsonOrder);
+            Console.WriteLine("Sending a new order to Driver Socket Server :: " + jsonOrder);
             nwStream.Write(bytesToSend, 0, bytesToSend.Length);
         }
     }

@@ -10,10 +10,10 @@ namespace LogicLayer
         private readonly string baseUrl = "http://localhost:8080/";
         private readonly Rozetka _rozetka;
 
-        // public NotificationHub(Rozetka rozetka)
-        // {
-        //     _rozetka = rozetka;
-        // }
+        public NotificationHub(Rozetka rozetka)
+        {
+            _rozetka = rozetka;
+        }
         
         public override Task OnConnectedAsync()
         {
@@ -32,7 +32,7 @@ namespace LogicLayer
             
             var response = client.Execute(request);
             
-            // _rozetka.SendOrder();
+            _rozetka.SendOrder(jsonOrder);
         }
     }
 }
