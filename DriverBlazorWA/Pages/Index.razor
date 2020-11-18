@@ -3,93 +3,59 @@
 @inject IJSRuntime JS
 @using Microsoft.AspNetCore.SignalR.Client
 @using DriverBlazorWA.Models
+@using System.Net.WebSockets
+@using System.Text
+@using System.Threading
+@* @implements IDisposable *@
 
-<h1>Driver BlazorWA</h1>
+<h1>Echo test</h1>
 
-<h3>Connected to SignalR? @connectionStatus</h3>
+<h3>State: </h3>
 
-<hr>
-
-<h3>Orders</h3>
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">CustomerId</th>
-      <th scope="col">DriverId</th>
-      <th scope="col">StartingPoint</th>
-      <th scope="col">DestinationPoint</th>
-      <th scope="col">TypeOfCar</th>
-      <th scope="col">AmountOfSeats</th>
-    </tr>
-  </thead>
-  <tbody>
-      @foreach (var order in _orders)
-      {
-          <tr>
-              <td>@order.CustomerId</td>
-              <td>@order.DriverId</td>
-              <td>@order.StartingPoint</td>
-              <td>@order.DestinationPoint</td>
-              <td>@order.TypeOfCar</td>
-              <td>@order.AmountOfSeats</td>
-              <td><button @onclick="TakeOrder">Take order</button></td>
-          </tr>
-      }
-  </tbody>
-</table>
-
+@* @if (webSocket.State == WebSocketState.Open) *@
+@* { *@
+@*     <form @onsubmit="@SendMessageAsync"> *@
+@*         Message: <input @bind="@message" /> *@
+@*         <button type="submit">Send</button> *@
+@*     </form> *@
+@*      *@
+@*     <pre>@log</pre> *@
+@* } *@
 @code {
-    string url = "https://localhost:5002/orders";
+    // CancellationTokenSource disposalTokenSource = new CancellationTokenSource();
+    // ClientWebSocket webSocket = new ClientWebSocket();
+    //
+    // string message = "Hello, websocket!";
+    // string log = "";
+    //
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     await webSocket.ConnectAsync(new Uri("wss://localhost:5001/"), disposalTokenSource.Token);
+    //     _ = ReceiveLoop();
+    // }
+    //
+    // async Task SendMessageAsync()
+    // {
+    //     log += $"Sending: {message}\n";
+    //     var dataToSend = new ArraySegment<byte>(Encoding.UTF8.GetBytes(message));
+    //     await webSocket.SendAsync(dataToSend, WebSocketMessageType.Text, true, disposalTokenSource.Token);
+    // }
+    //
+    // async Task ReceiveLoop()
+    // {
+    //     var buffer = new ArraySegment<byte>(new byte[1024]);
+    //     while (!disposalTokenSource.IsCancellationRequested)
+    //     {
+    //         var received = await webSocket.ReceiveAsync(buffer, disposalTokenSource.Token);
+    //         var receivedAsText = Encoding.UTF8.GetString(buffer.Array, 0, received.Count);
+    //         log += $"Received: {receivedAsText}\n";
+    //         StateHasChanged();
+    //     }
+    // }
+    // public void Dispose()
+    // {
+    //     disposalTokenSource.Cancel();
+    //     _ = webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Bye", CancellationToken.None);
+    // }
 
-    HubConnection _connection;
-    string connectionStatus = "Disconnected";
-    
-    private IList<Order> _orders = new List<Order>();
-    
-    Task Send() =>
-        _connection.SendAsync("SendNotify", "test");
-    
-    Task GetOrders() =>
-        _connection.SendAsync("SendNotification");
-
-    protected override async Task OnInitializedAsync()
-    {
-        await JS.InvokeVoidAsync("console.log", "Initialized");
-        await ConnectToServer();
-        await _connection.SendAsync("GetOrders");
-    }
-
-    private async Task TakeOrder()
-    {
-        await _connection.SendAsync("TakeOrder", 1);
-    }
-
-    private async Task ConnectToServer()
-    {
-        await JS.InvokeVoidAsync("console.log", "Connected to SignalR");
-        _connection = new HubConnectionBuilder()
-            .WithUrl(url)
-            .Build();
-
-        await _connection.StartAsync();
-        connectionStatus = "Connected";
-
-        _connection.Closed += async (s) =>
-        {
-            connectionStatus = "Disconnected";
-            await _connection.StartAsync();
-        };
-
-        _connection.On<string>("receiveOrders",  receivedOrders =>
-        {
-            _orders = Newtonsoft.Json.JsonConvert.DeserializeObject<IList<Order>>(receivedOrders);
-            StateHasChanged();
-        });
-        
-        _connection.On<string>("pushOrder",  jsonOrder =>
-        {
-            _orders.Add(Newtonsoft.Json.JsonConvert.DeserializeObject<Order>(jsonOrder));
-            StateHasChanged();
-        });
-    }
 }
